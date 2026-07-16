@@ -43,7 +43,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build image for scanning
-        run: docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
+        run: |
+          docker build -t ghcr.io/cloudnash/multi-cloud-ci-cd-pipeline-with-automated-provisioning-observability/app:4526e7ccd2e142bf86d17d287c6f10ab1a9dda49 .
       - name: Trivy vulnerability scan
         uses: aquasecurity/trivy-action@master
         with:
