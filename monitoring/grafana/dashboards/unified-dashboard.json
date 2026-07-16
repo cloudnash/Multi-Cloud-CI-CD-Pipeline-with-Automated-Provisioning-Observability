@@ -1,0 +1,54 @@
+{
+  "title": "Multi-Cloud Service Health (AWS + GCP)",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "refresh": "30s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Request Rate by Cloud",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "sum(rate(http_requests_total[5m])) by (cloud)", "legendFormat": "{{cloud}}" }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "5xx Error Rate by Cloud",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "sum(rate(http_requests_total{status=~\"5..\"}[5m])) by (cloud)", "legendFormat": "{{cloud}}" }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "P95 Latency by Cloud",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, cloud))", "legendFormat": "{{cloud}}" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "CPU / Memory Utilization by Cloud",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "avg(rate(container_cpu_usage_seconds_total[5m])) by (cloud)", "legendFormat": "CPU - {{cloud}}" },
+        { "expr": "avg(container_memory_working_set_bytes) by (cloud)", "legendFormat": "Mem - {{cloud}}" }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Deployment Frequency (DORA)",
+      "type": "stat",
+      "gridPos": { "x": 0, "y": 16, "w": 8, "h": 6 },
+      "targets": [
+        { "expr": "sum(increase(deployments_total[7d])) by (cloud)", "legendFormat": "{{cloud}}" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "aws": "https://app-aws.example.com/healthz",
+  "gcp": "https://app-gcp.example.com/healthz"
+}
